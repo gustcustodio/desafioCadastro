@@ -1,3 +1,10 @@
-.idea
-.code
-.vscode
+# IntelliJ IDEA
+.idea/*
+*.iml
+*.iws
+out/
+gen/
+# Compiled class files
+*.class
+# Log files
+*.log
