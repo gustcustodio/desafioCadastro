@@ -1,5 +1,8 @@
 package app.menu;
 
+import app.model.enums.Sex;
+import app.model.enums.Type;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -8,6 +11,7 @@ import java.util.Scanner;
 
 public class MainMenu {
     Scanner sc = new Scanner(System.in);
+    List<String> questions = new ArrayList<>();
 
     public void initialMenu() {
         int option = -1;
@@ -22,6 +26,7 @@ public class MainMenu {
 
             try {
                 option = sc.nextInt();
+                sc.nextLine();
 
                 if (option <= 0 || option > 6) {
                     System.out.println("Opção inválida. Digite um número entre 1 e 6.");
@@ -38,32 +43,61 @@ public class MainMenu {
         } while (option != 6);
     }
 
-    public void formReader() {
-        String path = "app/formulario.txt";
-        List<String> answers = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String question;
-
-            while ((question = br.readLine()) != null) {
-                System.out.print(question + " ");
-                String answer = sc.nextLine();
-                answers.add(answer);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
     public void formOption(int option) {
         switch (option) {
             case 1:
                 formReader();
+                System.out.print("\n" + questions.get(0) + " ");
+                String petName = sc.nextLine();
+                System.out.print(questions.get(1) + " ");
+                String stringPetType = sc.nextLine().toUpperCase();
+                Type petType = Type.valueOf(stringPetType);
+                System.out.print(questions.get(2) + " ");
+                String stringPetSex = sc.nextLine().toUpperCase();
+                Sex petSex = Sex.valueOf(stringPetSex);
+                System.out.print(questions.get(3) + " ");
+                String petAddress = sc.nextLine();
+                System.out.print(questions.get(4) + " ");
+                Double petAge = sc.nextDouble();
+                System.out.print(questions.get(5) + " ");
+                Double petWeight = sc.nextDouble();
+                sc.nextLine();
+                System.out.print(questions.get(6) + " ");
+                String petBreed = sc.nextLine();
+                break;
+            case 2:
+                System.out.println("\nTestando opção 2.");
+                break;
+            case 3:
+                System.out.println("\nTestando opção 3.");
+                break;
+            case 4:
+                System.out.println("\nTestando opção 4.");
+                break;
+            case 5:
+                System.out.println("\nTestando opção 5.");
                 break;
             case 6:
                 System.out.println("\nSaindo do sistema. Até logo!");
                 break;
+        }
+    }
+
+    public void formReader() {
+        String path = "app/formulario.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    questions.add(line);
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
