@@ -90,6 +90,8 @@ public class MainMenu {
         Sex petSex = sexChecker(sc);
         Double petAge = ageChecker(sc);
         Double petWeight = weightChecker(sc);
+        String petBreed = breedChecker(sc);
+
         /*
         System.out.print(questions.get(3) + "\n");
         System.out.print("    Rua: ");
@@ -102,8 +104,7 @@ public class MainMenu {
         Address petAddress = new Address(petStreet, petHouseNumber, petCity);
 
 
-        System.out.print(questions.get(6) + " ");
-        String petBreed = sc.nextLine();
+
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
         System.out.println("PET CADASTRADO COM SUCESSO!");
         System.out.println(pet);
@@ -203,10 +204,9 @@ public class MainMenu {
         }
     }
 
-    // todo Implementar o método ageChecker com as seguintes regras: //
-    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto,  mas somente números. ! //
+    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
-    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x  anos. ! //
+    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x anos. ! //
     public Double ageChecker(Scanner sc) {
         while (true) {
             try {
@@ -239,8 +239,23 @@ public class MainMenu {
         }
     }
 
-    // todo Implementar o método breedChecker com a seguinte regra: //
     // ! No campo raça o usuário não poderá usar números nem caracteres especiais. ! //
-    public void breedChecker() {
+    public String breedChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(6) + " ");
+                String petBreed = sc.nextLine().trim();
+
+                if (!petBreed.matches("[A-Za-zÀ-ÿ ]+")) {
+                    throw new
+                            IllegalArgumentException("O nome deve conter apenas letras e espaço!");
+                }
+
+                return petBreed;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
     }
 }
