@@ -176,34 +176,6 @@ public class MainMenu {
         }
     }
 
-    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
-    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
-    public Double weightChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(5) + " ");
-                String stringPetWeight = sc.nextLine().trim();
-                stringPetWeight = stringPetWeight.replace(",", ".");
-
-                double petWeight = Double.parseDouble(stringPetWeight);
-
-
-                if (petWeight > 60.0 || petWeight < 0.5) {
-                    throw new
-                            IllegalArgumentException("Peso inválido! Deve ser entre 0.5kg e 60kg.");
-                }
-
-                return petWeight;
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número válido.");
-                System.out.println("Tenta novamente.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
     // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
     // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x anos. ! //
@@ -232,6 +204,34 @@ public class MainMenu {
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Digite um número válido.");
                 System.out.println("Tente novamente.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
+    }
+
+    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
+    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
+    public Double weightChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(5) + " ");
+                String stringPetWeight = sc.nextLine().trim();
+                stringPetWeight = stringPetWeight.replace(",", ".");
+
+                double petWeight = Double.parseDouble(stringPetWeight);
+
+
+                if (petWeight > 60.0 || petWeight < 0.5) {
+                    throw new
+                            IllegalArgumentException("Peso inválido! Deve ser entre 0.5kg e 60kg.");
+                }
+
+                return petWeight;
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um número válido.");
+                System.out.println("Tenta novamente.");
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
