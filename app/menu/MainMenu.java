@@ -88,6 +88,7 @@ public class MainMenu {
         String petName = nameChecker(sc);
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
+        Double petAge = ageChecker(sc);
         Double petWeight = weightChecker(sc);
         /*
         System.out.print(questions.get(3) + "\n");
@@ -99,8 +100,8 @@ public class MainMenu {
         System.out.print("    Cidade: ");
         String petCity = sc.nextLine();
         Address petAddress = new Address(petStreet, petHouseNumber, petCity);
-        System.out.print(questions.get(4) + " ");
-        Double petAge = sc.nextDouble();
+
+
         System.out.print(questions.get(6) + " ");
         String petBreed = sc.nextLine();
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
@@ -174,7 +175,6 @@ public class MainMenu {
         }
     }
 
-    // todo Implementar o método weightChecker com as seguintes regras: //
     // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
     public Double weightChecker(Scanner sc) {
@@ -207,7 +207,36 @@ public class MainMenu {
     // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto,  mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
     // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x  anos. ! //
-    public void ageChecker() {
+    public Double ageChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(4) + " ");
+                String stringPetAge = sc.nextLine().trim();
+                stringPetAge = stringPetAge.replace(",", ".");
+
+                double petAge = Double.parseDouble(stringPetAge);
+
+                if (petAge <= 0 || petAge > 20) {
+                    throw new
+                            IllegalArgumentException("Idade deve estar entre 0.1 e 20 anos");
+                }
+
+                if (petAge < 1.0) {
+                    System.out.println(
+                            "Idade menor do que 1 ano detectada. Considerando o valor como meses."
+                    );
+                    petAge = petAge / 12.0;
+                }
+
+                return petAge;
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um número válido.");
+                System.out.println("Tente novamente.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
     }
 
     // todo Implementar o método breedChecker com a seguinte regra: //
