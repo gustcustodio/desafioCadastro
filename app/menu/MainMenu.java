@@ -88,27 +88,14 @@ public class MainMenu {
         String petName = nameChecker(sc);
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
+        Address petAddress = addressChecker(sc);
         Double petAge = ageChecker(sc);
         Double petWeight = weightChecker(sc);
         String petBreed = breedChecker(sc);
 
-        /*
-        System.out.print(questions.get(3) + "\n");
-        System.out.print("    Rua: ");
-        String petStreet = sc.nextLine();
-        System.out.print("    Número da casa: ");
-        Integer petHouseNumber = sc.nextInt();
-        sc.nextLine();
-        System.out.print("    Cidade: ");
-        String petCity = sc.nextLine();
-        Address petAddress = new Address(petStreet, petHouseNumber, petCity);
-
-
-
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
         System.out.println("PET CADASTRADO COM SUCESSO!");
         System.out.println(pet);
-        */
     }
 
     // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome, caso contrário, lance uma exceção. ! //
@@ -176,6 +163,69 @@ public class MainMenu {
         }
     }
 
+    public Address addressChecker(Scanner sc) {
+        System.out.print(questions.get(3) + "\n");
+
+        String petStreet;
+        int petHouseNumber;
+        String petCity;
+
+        while (true) {
+            try {
+                System.out.print("    Rua: ");
+                petStreet = sc.nextLine().trim();
+
+                if (!petStreet.matches("[A-Za-zÀ-ÿ ]+")) {
+                    throw new
+                            IllegalArgumentException("A rua deve conter apenas letras e espaço!");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.print("    Número: ");
+                String stringPetHouseNumber = sc.nextLine().trim();
+                petHouseNumber = Integer.parseInt(stringPetHouseNumber);
+
+                if (petHouseNumber <= 0) {
+                    throw new
+                            IllegalArgumentException("O número da casa deve ser maior do que zero" +
+                            ".");
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite apenas números inteiros.");
+                System.out.println("Tente novamente.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.print("    Cidade: ");
+                petCity = sc.nextLine();
+
+                if (!petCity.matches("[A-Za-zÀ-ÿ ]+")) {
+                    throw new
+                            IllegalArgumentException("A cidade deve conter apenas letras e espaço!");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tenta novamente.");
+            }
+        }
+
+        return new Address(petStreet, petHouseNumber, petCity);
+    }
+
     // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
     // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x anos. ! //
@@ -212,7 +262,7 @@ public class MainMenu {
     }
 
     // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
-    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
+    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, lance uma exceção. ! //
     public Double weightChecker(Scanner sc) {
         while (true) {
             try {
