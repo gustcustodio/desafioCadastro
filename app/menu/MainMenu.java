@@ -116,4 +116,48 @@ public class MainMenu {
         System.out.println("PET CADASTRADO COM SUCESSO!");
         System.out.println(pet);
     }
+
+    // todo Implementar o método firstAndLastNameChecker com as seguintes regras: //
+    // * 1.
+    // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome,
+    // ! caso contrário, lance uma exceção. ! //
+    // * 2.
+    // ! O nome completo NÃO poderá conter caracteres especiais, somente letras de A-Z. ! //
+    public void firstAndLastNameChecker() {
+    }
+
+    // todo Implementar o método typeChecker e sexChecker com a seguinte regra: //
+    // ! Para o TIPO e SEXO do pet, você deverá usar ENUM. ! //
+    public void typeChecker() {
+    }
+
+    public void sexChecker() {
+    }
+
+    // todo Implementar o método weightChecker com as seguintes regras: //
+    // * 1.
+    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto,
+    // ! mas somente números. ! //
+    // * 2.
+    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg,
+    // ! lance uma exceção. ! //
+    public void weightChecker() {
+    }
+
+    // todo Implementar o método ageChecker com as seguintes regras: //
+    // * 1.
+    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto,
+    // ! mas somente números. ! //
+    // * 2.
+    // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
+    // * 3.
+    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x
+    // ! anos. ! //
+    public void ageChecker() {
+    }
+
+    // todo Implementar o método breedChecker com a seguinte regra: //
+    // ! No campo raça o usuário não poderá usar números nem caracteres especiais. ! //
+    public void breedChecker() {
+    }
 }
