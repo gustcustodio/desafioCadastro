@@ -89,13 +89,9 @@ public class MainMenu {
 
     public void newRegister() {
         String petName = nameChecker(sc);
+        Type petType = typeChecker(sc);
+        Sex petSex = sexChecker(sc);
         /*
-        System.out.print(questions.get(1) + " ");
-        String stringPetType = sc.nextLine().toUpperCase();
-        Type petType = Type.valueOf(stringPetType);
-        System.out.print(questions.get(2) + " ");
-        String stringPetSex = sc.nextLine().toUpperCase();
-        Sex petSex = Sex.valueOf(stringPetSex);
         System.out.print(questions.get(3) + "\n");
         System.out.print("    Rua: ");
         String petStreet = sc.nextLine();
@@ -118,39 +114,69 @@ public class MainMenu {
         */
     }
 
-    // todo Implementar o método nameChecker com as seguintes regras: //
     // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome, caso contrário, lance uma exceção. ! //
     // ! O nome completo NÃO poderá conter caracteres especiais, somente letras de A-Z. ! //
     public String nameChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print("\n" + questions.get(0) + " ");
+                System.out.print(questions.get(0) + " ");
                 String petName = sc.nextLine();
 
                 if (!petName.matches("[A-Za-zÀ-ÿ ]+")) {
                     throw new
-                            IllegalArgumentException("O nome deve conter apenas letras e espaço.");
+                            IllegalArgumentException("O nome deve conter apenas letras e espaço!");
                 }
 
                 if (!petName.contains(" ")) {
                     throw new
-                            IllegalArgumentException("O nome deve conter um sobrenome");
+                            IllegalArgumentException("O nome deve conter um sobrenome!");
                 }
 
                 return petName;
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.\n");
+                System.out.println("Tente novamente.");
             }
         }
     }
 
-    // todo Implementar o método typeChecker e sexChecker com a seguinte regra: //
-    // ! Para o TIPO e SEXO do pet, você deverá usar ENUM. ! //
-    public void typeChecker() {
+    // ! Para o TIPO e SEXO do pet, usar ENUM. ! //
+    public Type typeChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(1) + " ");
+                String stringPetType = sc.nextLine().trim().toUpperCase();
+
+                if (!stringPetType.equals("CACHORRO") && !stringPetType.equals("GATO")) {
+                    throw new
+                            IllegalArgumentException("O tipo do pet deve ser 'Cachorro' ou 'Gato'!");
+                }
+
+                return Type.valueOf(stringPetType);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
     }
 
-    public void sexChecker() {
+    public Sex sexChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(2) + " ");
+                String stringPetSex = sc.nextLine().toUpperCase();
+
+                if (!stringPetSex.equals("MACHO") && !stringPetSex.equals("FEMEA")) {
+                    throw new
+                            IllegalArgumentException("O sexo do pet deve ser 'Macho' ou 'Femea'.");
+                }
+
+                return Sex.valueOf(stringPetSex);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
     }
 
     // todo Implementar o método weightChecker com as seguintes regras: //
