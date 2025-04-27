@@ -5,19 +5,21 @@ import app.model.enums.Type;
 
 public class Pet {
     private Double age, weight;
-    private Integer numberOfAddress;
-    private String name, cityOfAdress, streetOfAdress, breed;
+    private String name, breed;
 
     private Sex sex;
     private Type type;
+    private Address address;
 
     public Pet() {
     }
 
-    public Pet(String name, Type type, Sex sex, Double age, Double weight, String breed) {
+    public Pet(String name, Type type, Sex sex, Address address,
+               Double age, Double weight, String breed) {
         this.name = name;
         this.type = type;
         this.sex = sex;
+        this.address = address;
         this.age = age;
         this.weight = weight;
         this.breed = breed;
@@ -45,6 +47,14 @@ public class Pet {
 
     public void setSex(Sex sex) {
         this.sex = sex;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Double getAge() {
@@ -77,6 +87,7 @@ public class Pet {
                 "name='" + name + '\'' +
                 ", type=" + type +
                 ", sex=" + sex +
+                ", address=" + address +
                 ", age=" + age +
                 ", weight=" + weight +
                 ", breed='" + breed + '\'' +
