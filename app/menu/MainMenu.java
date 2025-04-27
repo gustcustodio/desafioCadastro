@@ -1,5 +1,7 @@
 package app.menu;
 
+import app.model.entities.Address;
+import app.model.entities.Pet;
 import app.model.enums.Sex;
 import app.model.enums.Type;
 
@@ -47,23 +49,7 @@ public class MainMenu {
         switch (option) {
             case 1:
                 formReader();
-                System.out.print("\n" + questions.get(0) + " ");
-                String petName = sc.nextLine();
-                System.out.print(questions.get(1) + " ");
-                String stringPetType = sc.nextLine().toUpperCase();
-                Type petType = Type.valueOf(stringPetType);
-                System.out.print(questions.get(2) + " ");
-                String stringPetSex = sc.nextLine().toUpperCase();
-                Sex petSex = Sex.valueOf(stringPetSex);
-                System.out.print(questions.get(3) + " ");
-                String petAddress = sc.nextLine();
-                System.out.print(questions.get(4) + " ");
-                Double petAge = sc.nextDouble();
-                System.out.print(questions.get(5) + " ");
-                Double petWeight = sc.nextDouble();
-                sc.nextLine();
-                System.out.print(questions.get(6) + " ");
-                String petBreed = sc.nextLine();
+                newRegister();
                 break;
             case 2:
                 System.out.println("\nTestando opção 2.");
@@ -99,5 +85,35 @@ public class MainMenu {
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public void newRegister() {
+        System.out.print("\n" + questions.get(0) + " ");
+        String petName = sc.nextLine();
+        System.out.print(questions.get(1) + " ");
+        String stringPetType = sc.nextLine().toUpperCase();
+        Type petType = Type.valueOf(stringPetType);
+        System.out.print(questions.get(2) + " ");
+        String stringPetSex = sc.nextLine().toUpperCase();
+        Sex petSex = Sex.valueOf(stringPetSex);
+        System.out.print(questions.get(3) + "\n");
+        System.out.print("    Rua: ");
+        String petStreet = sc.nextLine();
+        System.out.print("    Número da casa: ");
+        Integer petHouseNumber = sc.nextInt();
+        sc.nextLine();
+        System.out.print("    Cidade: ");
+        String petCity = sc.nextLine();
+        Address petAddress = new Address(petStreet, petHouseNumber, petCity);
+        System.out.print(questions.get(4) + " ");
+        Double petAge = sc.nextDouble();
+        System.out.print(questions.get(5) + " ");
+        Double petWeight = sc.nextDouble();
+        sc.nextLine();
+        System.out.print(questions.get(6) + " ");
+        String petBreed = sc.nextLine();
+        Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
+        System.out.println("PET CADASTRADO COM SUCESSO!");
+        System.out.println(pet);
     }
 }
