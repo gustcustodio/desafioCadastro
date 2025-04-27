@@ -6,13 +6,10 @@ import app.model.enums.Sex;
 import app.model.enums.Type;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainMenu {
-    Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     List<String> questions = new ArrayList<>();
 
     public void initialMenu() {
@@ -91,6 +88,7 @@ public class MainMenu {
         String petName = nameChecker(sc);
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
+        Double petWeight = weightChecker(sc);
         /*
         System.out.print(questions.get(3) + "\n");
         System.out.print("    Rua: ");
@@ -103,9 +101,6 @@ public class MainMenu {
         Address petAddress = new Address(petStreet, petHouseNumber, petCity);
         System.out.print(questions.get(4) + " ");
         Double petAge = sc.nextDouble();
-        System.out.print(questions.get(5) + " ");
-        Double petWeight = sc.nextDouble();
-        sc.nextLine();
         System.out.print(questions.get(6) + " ");
         String petBreed = sc.nextLine();
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
@@ -164,7 +159,7 @@ public class MainMenu {
         while (true) {
             try {
                 System.out.print(questions.get(2) + " ");
-                String stringPetSex = sc.nextLine().toUpperCase();
+                String stringPetSex = sc.nextLine().trim().toUpperCase();
 
                 if (!stringPetSex.equals("MACHO") && !stringPetSex.equals("FEMEA")) {
                     throw new
@@ -182,7 +177,30 @@ public class MainMenu {
     // todo Implementar o método weightChecker com as seguintes regras: //
     // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
-    public void weightChecker() {
+    public Double weightChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print(questions.get(5) + " ");
+                String stringPetWeight = sc.nextLine().trim();
+                stringPetWeight = stringPetWeight.replace(",", ".");
+
+                double petWeight = Double.parseDouble(stringPetWeight);
+
+
+                if (petWeight > 60.0 || petWeight < 0.5) {
+                    throw new
+                            IllegalArgumentException("Peso inválido! Deve ser entre 0.5kg e 60kg.");
+                }
+
+                return petWeight;
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um número válido.");
+                System.out.println("Tenta novamente.");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+        }
     }
 
     // todo Implementar o método ageChecker com as seguintes regras: //
