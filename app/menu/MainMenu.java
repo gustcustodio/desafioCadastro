@@ -88,8 +88,8 @@ public class MainMenu {
     }
 
     public void newRegister() {
-        System.out.print("\n" + questions.get(0) + " ");
-        String petName = sc.nextLine();
+        String petName = nameChecker(sc);
+        /*
         System.out.print(questions.get(1) + " ");
         String stringPetType = sc.nextLine().toUpperCase();
         Type petType = Type.valueOf(stringPetType);
@@ -115,15 +115,34 @@ public class MainMenu {
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
         System.out.println("PET CADASTRADO COM SUCESSO!");
         System.out.println(pet);
+        */
     }
 
-    // todo Implementar o método firstAndLastNameChecker com as seguintes regras: //
-    // * 1.
-    // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome,
-    // ! caso contrário, lance uma exceção. ! //
-    // * 2.
+    // todo Implementar o método nameChecker com as seguintes regras: //
+    // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome, caso contrário, lance uma exceção. ! //
     // ! O nome completo NÃO poderá conter caracteres especiais, somente letras de A-Z. ! //
-    public void firstAndLastNameChecker() {
+    public String nameChecker(Scanner sc) {
+        while (true) {
+            try {
+                System.out.print("\n" + questions.get(0) + " ");
+                String petName = sc.nextLine();
+
+                if (!petName.matches("[A-Za-zÀ-ÿ ]+")) {
+                    throw new
+                            IllegalArgumentException("O nome deve conter apenas letras e espaço.");
+                }
+
+                if (!petName.contains(" ")) {
+                    throw new
+                            IllegalArgumentException("O nome deve conter um sobrenome");
+                }
+
+                return petName;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.\n");
+            }
+        }
     }
 
     // todo Implementar o método typeChecker e sexChecker com a seguinte regra: //
@@ -135,24 +154,15 @@ public class MainMenu {
     }
 
     // todo Implementar o método weightChecker com as seguintes regras: //
-    // * 1.
-    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto,
-    // ! mas somente números. ! //
-    // * 2.
-    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg,
-    // ! lance uma exceção. ! //
+    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
+    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, ! lance uma exceção. ! //
     public void weightChecker() {
     }
 
     // todo Implementar o método ageChecker com as seguintes regras: //
-    // * 1.
-    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto,
-    // ! mas somente números. ! //
-    // * 2.
+    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto,  mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
-    // * 3.
-    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x
-    // ! anos. ! //
+    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x  anos. ! //
     public void ageChecker() {
     }
 
