@@ -12,6 +12,8 @@ public class MainMenu {
     Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     List<String> questions = new ArrayList<>();
 
+    private static final String NOT_INFORMED = "NÃO INFORMADO";
+
     public void initialMenu() {
         int option = -1;
         do {
@@ -106,6 +108,10 @@ public class MainMenu {
                 System.out.print(questions.get(0) + " ");
                 String petName = sc.nextLine();
 
+                if (petName.isBlank()) {
+                    petName = NOT_INFORMED;
+                }
+
                 if (!petName.matches("[A-Za-zÀ-ÿ ]+")) {
                     throw new
                             IllegalArgumentException("O nome deve conter apenas letras e espaço!");
@@ -190,6 +196,11 @@ public class MainMenu {
             try {
                 System.out.print("    Número: ");
                 String stringPetHouseNumber = sc.nextLine().trim();
+
+                // todo //
+                // if (stringPetHouseNumber.isBlank()) {}
+
+
                 petHouseNumber = Integer.parseInt(stringPetHouseNumber);
 
                 if (petHouseNumber <= 0) {
@@ -233,8 +244,11 @@ public class MainMenu {
         while (true) {
             try {
                 System.out.print(questions.get(4) + " ");
-                String stringPetAge = sc.nextLine().trim();
-                stringPetAge = stringPetAge.replace(",", ".");
+                String stringPetAge = sc.nextLine().trim().replace(",", ".");
+
+                if (stringPetAge.isBlank()) {
+                    return null;
+                }
 
                 double petAge = Double.parseDouble(stringPetAge);
 
@@ -267,8 +281,11 @@ public class MainMenu {
         while (true) {
             try {
                 System.out.print(questions.get(5) + " ");
-                String stringPetWeight = sc.nextLine().trim();
-                stringPetWeight = stringPetWeight.replace(",", ".");
+                String stringPetWeight = sc.nextLine().trim().replace(",", ".");
+
+                if (stringPetWeight.isBlank()) {
+                    return null;
+                }
 
                 double petWeight = Double.parseDouble(stringPetWeight);
 
@@ -295,6 +312,10 @@ public class MainMenu {
             try {
                 System.out.print(questions.get(6) + " ");
                 String petBreed = sc.nextLine().trim();
+
+                if (petBreed.isEmpty()) {
+                    petBreed = NOT_INFORMED;
+                }
 
                 if (!petBreed.matches("[A-Za-zÀ-ÿ ]+")) {
                     throw new
