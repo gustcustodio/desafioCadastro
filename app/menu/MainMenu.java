@@ -4,6 +4,7 @@ import app.model.entities.Address;
 import app.model.entities.Pet;
 import app.model.enums.Sex;
 import app.model.enums.Type;
+import app.utils.Constants;
 
 import java.io.*;
 import java.util.*;
@@ -11,8 +12,6 @@ import java.util.*;
 public class MainMenu {
     Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     List<String> questions = new ArrayList<>();
-
-    private static final String NOT_INFORMED = "NÃO INFORMADO";
 
     public void initialMenu() {
         int option = -1;
@@ -109,7 +108,7 @@ public class MainMenu {
                 String petName = sc.nextLine();
 
                 if (petName.isBlank()) {
-                    petName = NOT_INFORMED;
+                    petName = Constants.NOT_INFORMED;
                 }
 
                 if (!petName.matches("[A-Za-zÀ-ÿ ]+")) {
@@ -173,7 +172,7 @@ public class MainMenu {
         System.out.print(questions.get(3) + "\n");
 
         String petStreet;
-        int petHouseNumber;
+        Integer petHouseNumber;
         String petCity;
 
         while (true) {
@@ -197,9 +196,10 @@ public class MainMenu {
                 System.out.print("    Número: ");
                 String stringPetHouseNumber = sc.nextLine().trim();
 
-                // todo //
-                // if (stringPetHouseNumber.isBlank()) {}
-
+                if (stringPetHouseNumber.isBlank()) {
+                    petHouseNumber = null;
+                    break;
+                }
 
                 petHouseNumber = Integer.parseInt(stringPetHouseNumber);
 
@@ -314,7 +314,7 @@ public class MainMenu {
                 String petBreed = sc.nextLine().trim();
 
                 if (petBreed.isEmpty()) {
-                    petBreed = NOT_INFORMED;
+                    petBreed = Constants.NOT_INFORMED;
                 }
 
                 if (!petBreed.matches("[A-Za-zÀ-ÿ ]+")) {
