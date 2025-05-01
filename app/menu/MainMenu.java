@@ -7,11 +7,15 @@ import app.model.enums.Type;
 import app.utils.Constants;
 
 import java.io.*;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MainMenu {
     Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     List<String> questions = new ArrayList<>();
+    List<Pet> pets = new ArrayList<>();
 
     public void initialMenu() {
         int option = -1;
@@ -86,6 +90,7 @@ public class MainMenu {
     }
 
     public void newRegister() {
+        int index = 0;
         String petName = nameChecker(sc);
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
@@ -93,14 +98,34 @@ public class MainMenu {
         String petAge = ageChecker(sc);
         String petWeight = weightChecker(sc);
         String petBreed = breedChecker(sc);
-
-        Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
+        pets.add(new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed));
+        savePetFile(index);
+        index++;
         System.out.println("PET CADASTRADO COM SUCESSO!");
-        System.out.println(pet);
+        initialMenu();
     }
 
-    // ! O usuário obrigatoriamente deverá cadastrar um pet com nome e sobrenome, caso contrário, lance uma exceção. ! //
-    // ! O nome completo NÃO poderá conter caracteres especiais, somente letras de A-Z. ! //
+    public void savePetFile(int index) {
+        String formattedName =
+                pets.get(index).getName().replace(" ", "").toUpperCase();
+        LocalDateTime timeNow = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm");
+        String dateAndTimeFormatted = timeNow.format(timeFormatter);
+
+        String fileName = dateAndTimeFormatted + "-" + formattedName + ".txt";
+
+        String path = "app\\petsCadastrados";
+
+        try {
+            File file = new File(fileName);
+            if (file.createNewFile()) {
+                System.out.println("File created: " + file.getName());
+            }
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro");
+        }
+    }
+
     public String nameChecker(Scanner sc) {
         while (true) {
             try {
@@ -129,7 +154,6 @@ public class MainMenu {
         }
     }
 
-    // ! Para o TIPO e SEXO do pet, usar ENUM. ! //
     public Type typeChecker(Scanner sc) {
         while (true) {
             try {
@@ -235,9 +259,6 @@ public class MainMenu {
         return new Address(petStreet, stringPetHouseNumber, petCity);
     }
 
-    // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
-    // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
-    // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x anos. ! //
     public String ageChecker(Scanner sc) {
         while (true) {
             try {
@@ -274,8 +295,6 @@ public class MainMenu {
         }
     }
 
-    // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
-    // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, lance uma exceção. ! //
     public String weightChecker(Scanner sc) {
         while (true) {
             try {
@@ -305,7 +324,6 @@ public class MainMenu {
         }
     }
 
-    // ! No campo raça o usuário não poderá usar números nem caracteres especiais. ! //
     public String breedChecker(Scanner sc) {
         while (true) {
             try {
