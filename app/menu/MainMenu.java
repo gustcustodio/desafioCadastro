@@ -7,6 +7,8 @@ import app.model.enums.Type;
 import app.utils.Constants;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +18,7 @@ public class MainMenu {
     Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     List<String> questions = new ArrayList<>();
     List<Pet> pets = new ArrayList<>();
+
 
     public void initialMenu() {
         int option = -1;
@@ -89,8 +92,9 @@ public class MainMenu {
         }
     }
 
+    int index = 0;
+
     public void newRegister() {
-        int index = 0;
         String petName = nameChecker(sc);
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
@@ -99,9 +103,9 @@ public class MainMenu {
         String petWeight = weightChecker(sc);
         String petBreed = breedChecker(sc);
         pets.add(new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed));
+        System.out.println("\nPET CADASTRADO COM SUCESSO!");
         savePetFile(index);
         index++;
-        System.out.println("PET CADASTRADO COM SUCESSO!");
         initialMenu();
     }
 
@@ -114,22 +118,37 @@ public class MainMenu {
 
         String fileName = dateAndTimeFormatted + "-" + formattedName + ".txt";
 
-        String path = "app\\petsCadastrados";
-
         try {
-            File file = new File(fileName);
+            File file = new File("app/petsCadastrados/" + fileName);
             if (file.createNewFile()) {
-                System.out.println("File created: " + file.getName());
+                System.out.println("Um arquivo com as informações do pet foi criado.");
+            }
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                bw.write("1 - " + pets.get(index).getName());
+                bw.newLine();
+                bw.write("2 - " + pets.get(index).getType());
+                bw.newLine();
+                bw.write("3 - " + pets.get(index).getSex());
+                bw.newLine();
+                bw.write("4 - " + pets.get(index).getAddress().toString());
+                bw.newLine();
+                bw.write("5 - " + pets.get(index).getAge() + " anos");
+                bw.newLine();
+                bw.write("6 - " + pets.get(index).getWeight() + "kg");
+                bw.newLine();
+                bw.write("7 - " + pets.get(index).getBreed());
+            } catch (IOException e) {
+                System.out.println("Ocorreu um erro na escrita do arquivo");
             }
         } catch (IOException e) {
-            System.out.println("Ocorreu um erro");
+            System.out.println("Ocorreu um erro na criação do arquivo.");
         }
     }
 
     public String nameChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print(questions.get(0) + " ");
+                System.out.print("\n" + questions.get(0) + " ");
                 String petName = sc.nextLine();
 
                 if (petName.isBlank()) {
