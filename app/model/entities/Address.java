@@ -1,10 +1,9 @@
 package app.model.entities;
 
 public class Address {
-    private Integer numberOfAddress;
-    private String cityOfAdress, streetOfAdress;
+    private String cityOfAdress, numberOfAddress, streetOfAdress;
 
-    public Address(String streetOfAdress, Integer numberOfAddress, String cityOfAdress) {
+    public Address(String streetOfAdress, String numberOfAddress, String cityOfAdress) {
         this.streetOfAdress = streetOfAdress;
         this.numberOfAddress = numberOfAddress;
         this.cityOfAdress = cityOfAdress;
@@ -14,24 +13,12 @@ public class Address {
         return streetOfAdress;
     }
 
-    public void setStreetOfAdress(String streetOfAdress) {
-        this.streetOfAdress = streetOfAdress;
-    }
-
-    public Integer getNumberOfAddress() {
+    public String getNumberOfAddress() {
         return numberOfAddress;
-    }
-
-    public void setNumberOfAddress(Integer numberOfAddress) {
-        this.numberOfAddress = numberOfAddress;
     }
 
     public String getCityOfAdress() {
         return cityOfAdress;
-    }
-
-    public void setCityOfAdress(String cityOfAdress) {
-        this.cityOfAdress = cityOfAdress;
     }
 
     @Override
