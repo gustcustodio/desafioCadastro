@@ -90,8 +90,8 @@ public class MainMenu {
         Type petType = typeChecker(sc);
         Sex petSex = sexChecker(sc);
         Address petAddress = addressChecker(sc);
-        Double petAge = ageChecker(sc);
-        Double petWeight = weightChecker(sc);
+        String petAge = ageChecker(sc);
+        String petWeight = weightChecker(sc);
         String petBreed = breedChecker(sc);
 
         Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
@@ -171,9 +171,7 @@ public class MainMenu {
     public Address addressChecker(Scanner sc) {
         System.out.print(questions.get(3) + "\n");
 
-        String petStreet;
-        Integer petHouseNumber;
-        String petCity;
+        String petStreet, stringPetHouseNumber, petCity;
 
         while (true) {
             try {
@@ -194,14 +192,14 @@ public class MainMenu {
         while (true) {
             try {
                 System.out.print("    Número: ");
-                String stringPetHouseNumber = sc.nextLine().trim();
+                stringPetHouseNumber = sc.nextLine().trim();
 
                 if (stringPetHouseNumber.isBlank()) {
-                    petHouseNumber = null;
+                    stringPetHouseNumber = Constants.NOT_INFORMED;
                     break;
                 }
 
-                petHouseNumber = Integer.parseInt(stringPetHouseNumber);
+                int petHouseNumber = Integer.parseInt(stringPetHouseNumber);
 
                 if (petHouseNumber <= 0) {
                     throw new
@@ -234,20 +232,20 @@ public class MainMenu {
             }
         }
 
-        return new Address(petStreet, petHouseNumber, petCity);
+        return new Address(petStreet, stringPetHouseNumber, petCity);
     }
 
     // ! Na idade aproximada do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite uma idade maior que 20 anos, lance uma exceção. ! //
     // ! Caso o usuário digite uma idade menor que 1 ano (idade em meses), transforme em 0.x anos. ! //
-    public Double ageChecker(Scanner sc) {
+    public String ageChecker(Scanner sc) {
         while (true) {
             try {
                 System.out.print(questions.get(4) + " ");
                 String stringPetAge = sc.nextLine().trim().replace(",", ".");
 
                 if (stringPetAge.isBlank()) {
-                    return null;
+                    return Constants.NOT_INFORMED;
                 }
 
                 double petAge = Double.parseDouble(stringPetAge);
@@ -262,9 +260,10 @@ public class MainMenu {
                             "Idade menor do que 1 ano detectada. Considerando o valor como meses."
                     );
                     petAge = petAge / 12.0;
+                    return String.format("%.2f", petAge);
                 }
 
-                return petAge;
+                return stringPetAge;
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Digite um número válido.");
                 System.out.println("Tente novamente.");
@@ -277,14 +276,14 @@ public class MainMenu {
 
     // ! Em peso aproximado do pet, o usuário poderá digitar números com vírgulas ou ponto, mas somente números. ! //
     // ! Caso o usuário digite um peso maior que 60kg ou um peso menor que 0.5kg, lance uma exceção. ! //
-    public Double weightChecker(Scanner sc) {
+    public String weightChecker(Scanner sc) {
         while (true) {
             try {
                 System.out.print(questions.get(5) + " ");
                 String stringPetWeight = sc.nextLine().trim().replace(",", ".");
 
                 if (stringPetWeight.isBlank()) {
-                    return null;
+                    return Constants.NOT_INFORMED;
                 }
 
                 double petWeight = Double.parseDouble(stringPetWeight);
@@ -295,7 +294,7 @@ public class MainMenu {
                             IllegalArgumentException("Peso inválido! Deve ser entre 0.5kg e 60kg.");
                 }
 
-                return petWeight;
+                return stringPetWeight;
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Digite um número válido.");
                 System.out.println("Tenta novamente.");
