@@ -7,27 +7,23 @@ import app.model.enums.Type;
 import app.utils.Constants;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MainMenu {
-    Scanner sc = new Scanner(System.in).useLocale(Locale.US);
-    List<String> questions = new ArrayList<>();
-    List<Pet> pets = new ArrayList<>();
-
+    public static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
+    public static final List<String> questions = new ArrayList<>();
+    public static final List<Pet> pets = new ArrayList<>();
 
     public void initialMenu() {
         int option = -1;
         do {
             System.out.println("\n1. Cadastrar um novo pet");
-            System.out.println("2. Alterar os dados do pet cadastrado");
+            System.out.println("2. Listar pets por algum critério (idade, nome, raça)");
             System.out.println("3. Deletar um pet cadastrado");
             System.out.println("4. Listar todos os pets cadastrados");
-            System.out.println("5. Listar pets por algum critério (idade, nome, raça)");
+            System.out.println("5. Alterar os dados do pet cadastrados");
             System.out.println("6. Sair\n");
             System.out.print("Digite a opção desejada: ");
 
@@ -95,13 +91,22 @@ public class MainMenu {
     int index = 0;
 
     public void newRegister() {
-        String petName = nameChecker(sc);
-        Type petType = typeChecker(sc);
-        Sex petSex = sexChecker(sc);
-        Address petAddress = addressChecker(sc);
-        String petAge = ageChecker(sc);
-        String petWeight = weightChecker(sc);
-        String petBreed = breedChecker(sc);
+        Pet pet = new Pet();
+
+        System.out.print("\n" + questions.get(0) + " ");
+        String petName = sc.nextLine();
+        pet.setName(petName);
+
+        // todo //
+        System.out.print(MainMenu.questions.get(1) + " ");
+        Type petType = pet.typeChecker(sc);
+
+
+        Sex petSex = pet.sexChecker(sc);
+        Address petAddress = pet.addressChecker(sc);
+        String petAge = pet.ageChecker(sc);
+        String petWeight = pet.weightChecker(sc);
+        String petBreed = pet.breedChecker(sc);
         pets.add(new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed));
         System.out.println("\nPET CADASTRADO COM SUCESSO!");
         savePetFile(index);
@@ -111,7 +116,7 @@ public class MainMenu {
 
     public void savePetFile(int index) {
         String formattedName =
-                pets.get(index).getName().replace(" ", "").toUpperCase();
+                pets.get(index).getPetName().replace(" ", "").toUpperCase();
         LocalDateTime timeNow = LocalDateTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm");
         String dateAndTimeFormatted = timeNow.format(timeFormatter);
@@ -124,245 +129,24 @@ public class MainMenu {
                 System.out.println("Um arquivo com as informações do pet foi criado.");
             }
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                bw.write("1 - " + pets.get(index).getName());
+                bw.write("1 - " + pets.get(index).getPetName());
                 bw.newLine();
-                bw.write("2 - " + pets.get(index).getType());
+                bw.write("2 - " + pets.get(index).getPetType());
                 bw.newLine();
-                bw.write("3 - " + pets.get(index).getSex());
+                bw.write("3 - " + pets.get(index).getPetSex());
                 bw.newLine();
-                bw.write("4 - " + pets.get(index).getAddress().toString());
+                bw.write("4 - " + pets.get(index).getPetAddress().toString());
                 bw.newLine();
-                bw.write("5 - " + pets.get(index).getAge() + " anos");
+                bw.write("5 - " + pets.get(index).getPetAge() + " anos");
                 bw.newLine();
-                bw.write("6 - " + pets.get(index).getWeight() + "kg");
+                bw.write("6 - " + pets.get(index).getPetWeight() + "kg");
                 bw.newLine();
-                bw.write("7 - " + pets.get(index).getBreed());
+                bw.write("7 - " + pets.get(index).getPetBreed());
             } catch (IOException e) {
                 System.out.println("Ocorreu um erro na escrita do arquivo");
             }
         } catch (IOException e) {
             System.out.println("Ocorreu um erro na criação do arquivo.");
-        }
-    }
-
-    public String nameChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print("\n" + questions.get(0) + " ");
-                String petName = sc.nextLine();
-
-                if (petName.isBlank()) {
-                    petName = Constants.NOT_INFORMED;
-                }
-
-                if (!petName.matches("[A-Za-zÀ-ÿ ]+")) {
-                    throw new
-                            IllegalArgumentException("O nome deve conter apenas letras e espaço!");
-                }
-
-                if (!petName.contains(" ")) {
-                    throw new
-                            IllegalArgumentException("O nome deve conter um sobrenome!");
-                }
-
-                return petName;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
-    public Type typeChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(1) + " ");
-                String stringPetType = sc.nextLine().trim().toUpperCase();
-
-                if (!stringPetType.equals("CACHORRO") && !stringPetType.equals("GATO")) {
-                    throw new
-                            IllegalArgumentException("O tipo do pet deve ser 'Cachorro' ou 'Gato'!");
-                }
-
-                return Type.valueOf(stringPetType);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
-    public Sex sexChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(2) + " ");
-                String stringPetSex = sc.nextLine().trim().toUpperCase();
-
-                if (!stringPetSex.equals("MACHO") && !stringPetSex.equals("FEMEA")) {
-                    throw new
-                            IllegalArgumentException("O sexo do pet deve ser 'Macho' ou 'Femea'.");
-                }
-
-                return Sex.valueOf(stringPetSex);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
-    public Address addressChecker(Scanner sc) {
-        System.out.print(questions.get(3) + "\n");
-
-        String petStreet, stringPetHouseNumber, petCity;
-
-        while (true) {
-            try {
-                System.out.print("    Rua: ");
-                petStreet = sc.nextLine().trim();
-
-                if (!petStreet.matches("[A-Za-zÀ-ÿ ]+")) {
-                    throw new
-                            IllegalArgumentException("A rua deve conter apenas letras e espaço!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-
-        while (true) {
-            try {
-                System.out.print("    Número: ");
-                stringPetHouseNumber = sc.nextLine().trim();
-
-                if (stringPetHouseNumber.isBlank()) {
-                    stringPetHouseNumber = Constants.NOT_INFORMED;
-                    break;
-                }
-
-                int petHouseNumber = Integer.parseInt(stringPetHouseNumber);
-
-                if (petHouseNumber <= 0) {
-                    throw new
-                            IllegalArgumentException("O número da casa deve ser maior do que zero" +
-                            ".");
-                }
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite apenas números inteiros.");
-                System.out.println("Tente novamente.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-
-        while (true) {
-            try {
-                System.out.print("    Cidade: ");
-                petCity = sc.nextLine();
-
-                if (!petCity.matches("[A-Za-zÀ-ÿ ]+")) {
-                    throw new
-                            IllegalArgumentException("A cidade deve conter apenas letras e espaço!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tenta novamente.");
-            }
-        }
-
-        return new Address(petStreet, stringPetHouseNumber, petCity);
-    }
-
-    public String ageChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(4) + " ");
-                String stringPetAge = sc.nextLine().trim().replace(",", ".");
-
-                if (stringPetAge.isBlank()) {
-                    return Constants.NOT_INFORMED;
-                }
-
-                double petAge = Double.parseDouble(stringPetAge);
-
-                if (petAge <= 0 || petAge > 20) {
-                    throw new
-                            IllegalArgumentException("Idade deve estar entre 0.1 e 20 anos");
-                }
-
-                if (petAge < 1.0) {
-                    System.out.println(
-                            "Idade menor do que 1 ano detectada. Considerando o valor como meses."
-                    );
-                    petAge = petAge / 12.0;
-                    return String.format("%.2f", petAge);
-                }
-
-                return stringPetAge;
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número válido.");
-                System.out.println("Tente novamente.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
-    public String weightChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(5) + " ");
-                String stringPetWeight = sc.nextLine().trim().replace(",", ".");
-
-                if (stringPetWeight.isBlank()) {
-                    return Constants.NOT_INFORMED;
-                }
-
-                double petWeight = Double.parseDouble(stringPetWeight);
-
-
-                if (petWeight > 60.0 || petWeight < 0.5) {
-                    throw new
-                            IllegalArgumentException("Peso inválido! Deve ser entre 0.5kg e 60kg.");
-                }
-
-                return stringPetWeight;
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número válido.");
-                System.out.println("Tenta novamente.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
-        }
-    }
-
-    public String breedChecker(Scanner sc) {
-        while (true) {
-            try {
-                System.out.print(questions.get(6) + " ");
-                String petBreed = sc.nextLine().trim();
-
-                if (petBreed.isEmpty()) {
-                    petBreed = Constants.NOT_INFORMED;
-                }
-
-                if (!petBreed.matches("[A-Za-zÀ-ÿ ]+")) {
-                    throw new
-                            IllegalArgumentException("O nome deve conter apenas letras e espaço!");
-                }
-
-                return petBreed;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tente novamente.");
-            }
         }
     }
 }
