@@ -92,16 +92,8 @@ public class MainMenu {
 
     public void newRegister() {
         Pet pet = new Pet();
-
-        System.out.print("\n" + questions.get(0) + " ");
-        String petName = sc.nextLine();
-        pet.setName(petName);
-
-        // todo //
-        System.out.print(MainMenu.questions.get(1) + " ");
+        String petName = pet.nameChecker(sc);
         Type petType = pet.typeChecker(sc);
-
-
         Sex petSex = pet.sexChecker(sc);
         Address petAddress = pet.addressChecker(sc);
         String petAge = pet.ageChecker(sc);

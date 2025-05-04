@@ -7,6 +7,9 @@ import app.utils.Constants;
 
 import java.util.Scanner;
 
+import static app.menu.MainMenu.questions;
+import static app.menu.MainMenu.sc;
+
 public class Pet {
     private String petName, petBreed, petAge, petWeight;
 
@@ -28,9 +31,12 @@ public class Pet {
         this.petBreed = petBreed;
     }
 
-    public String nameChecker(String petName) {
+    public String nameChecker(Scanner sc) {
         while (true) {
             try {
+                System.out.print("\n" + questions.get(0) + " ");
+                String petName = sc.nextLine();
+
                 if (petName.isBlank()) {
                     petName = Constants.NOT_INFORMED;
                 }
@@ -56,6 +62,7 @@ public class Pet {
     public Type typeChecker(Scanner sc) {
         while (true) {
             try {
+                System.out.print(questions.get(1) + " ");
                 String stringPetType = sc.nextLine().trim().toUpperCase();
 
                 if (!stringPetType.equals("CACHORRO") && !stringPetType.equals("GATO")) {
@@ -71,10 +78,11 @@ public class Pet {
         }
     }
 
+
     public Sex sexChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print(MainMenu.questions.get(2) + " ");
+                System.out.print(questions.get(2) + " ");
                 String stringPetSex = sc.nextLine().trim().toUpperCase();
 
                 if (!stringPetSex.equals("MACHO") && !stringPetSex.equals("FEMEA")) {
@@ -86,12 +94,13 @@ public class Pet {
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
+
             }
         }
     }
 
     public Address addressChecker(Scanner sc) {
-        System.out.print(MainMenu.questions.get(3) + "\n");
+        System.out.print(questions.get(3) + "\n");
 
         String petStreet, stringPetHouseNumber, petCity;
 
@@ -100,7 +109,7 @@ public class Pet {
                 System.out.print("    Rua: ");
                 petStreet = sc.nextLine().trim();
 
-                if (!petStreet.matches("[A-Za-zÀ-ÿ ]+")) {
+                if (!petStreet.matches("^[\\p{L}0-9\\s]+$")) {
                     throw new
                             IllegalArgumentException("A rua deve conter apenas letras e espaço!");
                 }
@@ -160,7 +169,7 @@ public class Pet {
     public String ageChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print(MainMenu.questions.get(4) + " ");
+                System.out.print(questions.get(4) + " ");
                 String stringPetAge = sc.nextLine().trim().replace(",", ".");
 
                 if (stringPetAge.isBlank()) {
@@ -196,7 +205,7 @@ public class Pet {
     public String weightChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print(MainMenu.questions.get(5) + " ");
+                System.out.print(questions.get(5) + " ");
                 String stringPetWeight = sc.nextLine().trim().replace(",", ".");
 
                 if (stringPetWeight.isBlank()) {
@@ -225,14 +234,14 @@ public class Pet {
     public String breedChecker(Scanner sc) {
         while (true) {
             try {
-                System.out.print(MainMenu.questions.get(6) + " ");
+                System.out.print(questions.get(6) + " ");
                 String petBreed = sc.nextLine().trim();
 
                 if (petBreed.isEmpty()) {
                     petBreed = Constants.NOT_INFORMED;
                 }
 
-                if (!petBreed.matches("[A-Za-zÀ-ÿ ]+")) {
+                if (!petBreed.matches("^[\\p{L}\\s\\-]+$")) {
                     throw new
                             IllegalArgumentException("O nome deve conter apenas letras e espaço!");
                 }
@@ -247,10 +256,6 @@ public class Pet {
 
     public String getPetName() {
         return petName;
-    }
-
-    public void setName(String name) {
-        this.petName = nameChecker(name);
     }
 
     public Type getPetType() {
