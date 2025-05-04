@@ -46,7 +46,8 @@ public class MainMenu {
                 NewRegister.newRegister();
                 break;
             case 2:
-                SearchMenu.searchMenu();
+                SearchMenu.typeOfAnimal();
+                SearchMenu.runMenu();
                 break;
             case 3:
                 System.out.println("\nTestando opção 3.");
