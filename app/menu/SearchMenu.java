@@ -1,17 +1,26 @@
 package app.menu;
 
+import app.model.entities.Pet;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static app.menu.MainMenu.sc;
 
 public class SearchMenu {
     public static final List<Integer> criterions = new ArrayList<>();
+    Path petsFolder = Paths.get("app/petsCadastrados");
 
     public static void typeOfAnimal() {
         int type = readNumber(
                 """
-
+                        
                         Você está buscando qual tipo de animal?
                         [1] - Cachorro
                         [2] - Gato
@@ -35,6 +44,30 @@ public class SearchMenu {
             );
             criterions.add(criterion);
         }
+    }
+
+    public static List<Pet> loadSavedPets(Path petsFolder) {
+        List<Pet> petList = new ArrayList<>();
+
+        try (Stream<Path> files = Files.list(petsFolder)) {
+
+            List<Path> txtFiles = files
+                    .filter(p -> p.toString().endsWith(".txt"))
+                    .collect(Collectors.toList());
+
+            for (Path file : txtFiles) {
+                try {
+                    Pet pet = Pet.fromTxtFile(file);
+                    petList.add(pet);
+                } catch (IOException e) {
+                    System.out.println("Erro ao ler o arquivo: " + file.getFileName());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao acessar a pasta");
+        }
+
+        return petList;
     }
 
     public static void optionsMenu() {

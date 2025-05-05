@@ -1,14 +1,17 @@
 package app.model.entities;
 
-import app.menu.MainMenu;
 import app.model.enums.Sex;
 import app.model.enums.Type;
 import app.utils.Constants;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Scanner;
 
 import static app.menu.MainMenu.questions;
-import static app.menu.MainMenu.sc;
 
 public class Pet {
     private String petName, petBreed, petAge, petWeight;
@@ -29,6 +32,29 @@ public class Pet {
         this.petAge = petAge;
         this.petWeight = petWeight;
         this.petBreed = petBreed;
+    }
+
+    public static Pet fromTxtFile(Path filePath) throws IOException {
+        List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+
+        String name = lines.get(0).substring(4).trim();
+        Type type = Type.valueOf(lines.get(1).substring(4).trim().toUpperCase());
+        Sex sex = Sex.valueOf(lines.get(2).substring(4).trim().toUpperCase());
+
+        String completAddress = lines.get(3).substring(4).trim();
+        String[] partsOfAddress = completAddress.split((","));
+        String street = partsOfAddress[0].trim();
+        String number =
+                partsOfAddress.length > 1 ? partsOfAddress[1].trim() : Constants.NOT_INFORMED;
+        String city =
+                partsOfAddress.length > 1 ? partsOfAddress[2].trim() : Constants.NOT_INFORMED;
+        Address address = new Address(street, number, city);
+
+        String age = lines.get(4).substring(4).trim();
+        String weight = lines.get(5).substring(4).trim();
+        String breed = lines.get(6).substring(4).trim();
+
+        return new Pet(name, type, sex, address, age, weight, breed);
     }
 
     public String nameChecker(Scanner sc) {
