@@ -1,110 +1,171 @@
 package app.menu;
 
 import app.model.entities.Pet;
+import app.model.enums.Type;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.nio.file.*;
+import java.util.*;
 
 import static app.menu.MainMenu.sc;
 
 public class SearchMenu {
-    public static final List<Integer> criterions = new ArrayList<>();
-    Path petsFolder = Paths.get("app/petsCadastrados");
 
-    public static void typeOfAnimal() {
-        int type = readNumber(
-                """
-                        
-                        Você está buscando qual tipo de animal?
-                        [1] - Cachorro
-                        [2] - Gato
-                        Digite o número correspondente ao tipo desejado:\s""",
-                2
-        );
-        criterions.add(type);
-    }
+    private static final Path petsFolder = Paths.get("app/petsCadastrados");
 
-    public static void runMenu() {
-        int numberOfFilters = readNumber(
-                "Quantos filtros deseja utilizar para realizar a busca (min. 1 - máx. 2)? ",
-                2
-        );
+    public static void executeSearch() {
+        Type petType = askPetType();
+        List<Integer> criteria = askFilters();
+        Map<Integer, String> criteriaValues = collectCriteriaValues(criteria);
+        List<Pet> allPets = loadSavedPets();
 
-        for (int i = 1; i <= numberOfFilters; i++) {
-            optionsMenu();
-            int criterion = readNumber(
-                    "Informe o número do critério que você deseja utilizar: ",
-                    6
-            );
-            criterions.add(criterion);
+        List<Pet> filteredPets = allPets.stream()
+                .filter(p -> p.getPetType() == petType)
+                .filter(p -> filterByCriteria(p, criteriaValues))
+                .toList();
+
+        if (filteredPets.isEmpty()) {
+            System.out.println("\nNenhum pet encontrado com os critérios informados.");
+        } else {
+            System.out.println("\nPets encontrados:");
+            filteredPets.forEach(System.out::println);
         }
     }
 
-    public static List<Pet> loadSavedPets(Path petsFolder) {
-        List<Pet> petList = new ArrayList<>();
+    private static Type askPetType() {
+        int choice = askForNumber("""
+                Qual tipo de animal deseja buscar?
+                [1] - Cachorro
+                [2] - Gato
+                Digite:\s""", 2);
+        return (choice == 1) ? Type.CACHORRO : Type.GATO;
+    }
 
-        try (Stream<Path> files = Files.list(petsFolder)) {
+    private static List<Integer> askFilters() {
+        int filters = askForNumber("Quantos filtros deseja usar? (1 ou 2): ", 2);
+        List<Integer> criteria = new ArrayList<>();
 
-            List<Path> txtFiles = files
-                    .filter(p -> p.toString().endsWith(".txt"))
-                    .collect(Collectors.toList());
+        for (int i = 1; i <= filters; i++) {
+            printOptionsMenu();
+            int option = askForNumber("Informe o número do filtro desejado: ", 6);
+            criteria.add(option);
+        }
 
-            for (Path file : txtFiles) {
+        return criteria;
+    }
+
+    private static Map<Integer, String> collectCriteriaValues(List<Integer> criteria) {
+        Map<Integer, String> values = new HashMap<>();
+        for (Integer criterion : criteria) {
+            switch (criterion) {
+                case 1 -> {
+                    System.out.print("Nome ou sobrenome: ");
+                    values.put(1, sc.nextLine().trim().toLowerCase());
+                }
+                case 2 -> {
+                    System.out.print("Sexo (MACHO/FEMEA): ");
+                    values.put(2, sc.nextLine().trim().toUpperCase());
+                }
+                case 3 -> {
+                    System.out.print("Idade (ex: 7 anos): ");
+                    String input = sc.nextLine().trim();
+                    values.put(3, input.replaceAll("[^0-9]", "")); // Remove "anos" ou "mês"
+                }
+                case 4 -> {
+                    System.out.print("Peso (ex: 10.5kg): ");
+                    String input = sc.nextLine().trim();
+                    values.put(4, input.replaceAll("[^0-9.]", "")); // Remove "kg"
+                }
+                case 5 -> {
+                    System.out.print("Raça: ");
+                    values.put(5, sc.nextLine().trim().toLowerCase());
+                }
+                case 6 -> {
+                    System.out.print("Cidade: ");
+                    values.put(6, sc.nextLine().trim().toLowerCase());
+                }
+            }
+        }
+        return values;
+    }
+
+    private static boolean filterByCriteria(Pet pet, Map<Integer, String> values) {
+        for (Map.Entry<Integer, String> entry : values.entrySet()) {
+            int criterion = entry.getKey();
+            String userValue = entry.getValue();
+
+            switch (criterion) {
+                case 1 -> {
+                    String name = pet.getPetName().toLowerCase();
+                    if (!name.contains(userValue)) return false;
+                }
+                case 2 -> {
+                    if (!pet.getPetSex().name().equals(userValue)) return false;
+                }
+                case 3 -> {
+                    String petAge = pet.getPetAge().replaceAll("[^0-9]", ""); // Remove "anos"
+                    if (!petAge.equals(userValue)) return false;
+                }
+                case 4 -> {
+                    String petWeight = pet.getPetWeight().replaceAll("[^0-9.]", ""); // Remove "kg"
+                    if (!petWeight.equals(userValue)) return false;
+                }
+                case 5 -> {
+                    String breed = pet.getPetBreed().toLowerCase();
+                    if (!breed.contains(userValue)) return false;
+                }
+                case 6 -> {
+                    String city = pet.getPetAddress().getCityOfAdress().toLowerCase();
+                    if (!city.contains(userValue)) return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static List<Pet> loadSavedPets() {
+        List<Pet> pets = new ArrayList<>();
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(SearchMenu.petsFolder, "*.txt")) {
+            for (Path path : stream) {
                 try {
-                    Pet pet = Pet.fromTxtFile(file);
-                    petList.add(pet);
+                    Pet pet = Pet.fromTxtFile(path);
+                    pets.add(pet);
                 } catch (IOException e) {
-                    System.out.println("Erro ao ler o arquivo: " + file.getFileName());
+                    System.out.println("Erro ao ler: " + path.getFileName());
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao acessar a pasta");
+            System.out.println("Erro ao acessar a pasta de pets.");
         }
 
-        return petList;
+        return pets;
     }
 
-    public static void optionsMenu() {
-        System.out.println("Deseja utilizar qual filtro para realizar a busca?");
-        System.out.println("[1] - Nome ou sobrenome");
-        System.out.println("[2] - Sexo");
-        System.out.println("[3] - Idade");
-        System.out.println("[4] - Peso");
-        System.out.println("[5] - Raça");
-        System.out.println("[6] - Endereço");
+    private static void printOptionsMenu() {
+        System.out.println("""
+                Selecione um filtro adicional:
+                [1] - Nome ou sobrenome
+                [2] - Sexo
+                [3] - Idade
+                [4] - Peso
+                [5] - Raça
+                [6] - Endereço""");
     }
 
-    private static int readNumber(String prompt, int max) {
+    private static int askForNumber(String prompt, int maxOption) {
         while (true) {
             try {
                 System.out.print(prompt);
                 String input = sc.nextLine().trim();
-
-                if (input.isBlank()) {
-                    throw new IllegalArgumentException
-                            ("Entrada não pode estar em branco.");
-                }
-
                 int value = Integer.parseInt(input);
-
-                if (value < 1 || value > max) {
-                    throw new IllegalArgumentException
-                            ("Valor deve estar entre " + 1 + " e " + max + ".");
+                if (value < 1 || value > maxOption) {
+                    throw new IllegalArgumentException("Número inválido.");
                 }
-
                 return value;
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Você deve digitar apenas números.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Tente novamente.");
             }
-            System.out.println("Tente novamente.\n");
         }
     }
 }
