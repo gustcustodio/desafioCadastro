@@ -41,13 +41,10 @@ public class Pet {
         Type type = Type.valueOf(lines.get(1).substring(4).trim().toUpperCase());
         Sex sex = Sex.valueOf(lines.get(2).substring(4).trim().toUpperCase());
 
-        String completAddress = lines.get(3).substring(4).trim();
-        String[] partsOfAddress = completAddress.split((","));
-        String street = partsOfAddress[0].trim();
-        String number =
-                partsOfAddress.length > 1 ? partsOfAddress[1].trim() : Constants.NOT_INFORMED;
-        String city =
-                partsOfAddress.length > 1 ? partsOfAddress[2].trim() : Constants.NOT_INFORMED;
+        String[] addressParts = lines.get(3).substring(4).trim().split(",");
+        String street = addressParts[0].trim();
+        String number = addressParts[1].trim();
+        String city = addressParts[2].trim();
         Address address = new Address(street, number, city);
 
         String age = lines.get(4).substring(4).trim();
@@ -310,14 +307,18 @@ public class Pet {
 
     @Override
     public String toString() {
-        return "Pet{" +
-                "name='" + petName + '\'' +
-                ", type=" + petType +
-                ", sex=" + petSex +
-                ", address=" + petAddress +
-                ", age=" + petAge +
-                ", weight=" + petWeight +
-                ", breed='" + petBreed + '\'' +
-                '}';
+        return petName
+                + " - "
+                + petType
+                + " - "
+                + petSex
+                + " - "
+                + petAddress
+                + " - "
+                + petAge
+                + " - "
+                + petWeight
+                + " - "
+                + petBreed;
     }
 }
