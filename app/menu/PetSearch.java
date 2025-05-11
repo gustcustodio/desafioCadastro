@@ -29,14 +29,17 @@ public class PetSearch {
         int choice = askForNumber("""
       
                 Qual tipo de animal deseja buscar?
-                [1] - Cachorro
-                [2] - Gato
+                [1] 🐶 Cachorro
+                [2] 🐱 Gato
                 Digite a opção desejada:\s""", 2);
         return (choice == 1) ? Type.CACHORRO : Type.GATO;
     }
 
     private static List<Integer> askFilters() {
-        int filters = askForNumber("\nQuantos filtros deseja usar? (1 ou 2): ", 2);
+        int filters = askForNumber(
+                "\nInforme quantos filtros deseja utilizar em sua busca (1 ou 2): ",
+                2
+        );
         List<Integer> criteria = new ArrayList<>();
 
         for (int i = 1; i <= filters; i++) {
@@ -53,29 +56,29 @@ public class PetSearch {
         for (Integer criterion : criteria) {
             switch (criterion) {
                 case 1 -> {
-                    System.out.print("Nome ou sobrenome: ");
+                    System.out.print("\nNome ou sobrenome: ");
                     values.put(1, sc.nextLine().trim().toLowerCase());
                 }
                 case 2 -> {
-                    System.out.print("Sexo (MACHO/FEMEA): ");
+                    System.out.print("\nSexo (MACHO/FEMEA): ");
                     values.put(2, sc.nextLine().trim().toUpperCase());
                 }
                 case 3 -> {
-                    System.out.print("Idade (ex: 7 anos): ");
+                    System.out.print("\nIdade (ex: 7 anos): ");
                     String input = sc.nextLine().trim();
                     values.put(3, input.replaceAll("[^0-9]", "")); // Remove "anos" ou "mês"
                 }
                 case 4 -> {
-                    System.out.print("Peso (ex: 10.5kg): ");
+                    System.out.print("\nPeso (ex: 10.5kg): ");
                     String input = sc.nextLine().trim();
                     values.put(4, input.replaceAll("[^0-9.]", "")); // Remove "kg"
                 }
                 case 5 -> {
-                    System.out.print("Raça: ");
+                    System.out.print("\nRaça: ");
                     values.put(5, sc.nextLine().trim().toLowerCase());
                 }
                 case 6 -> {
-                    System.out.print("Cidade: ");
+                    System.out.print("\nCidade: ");
                     values.put(6, sc.nextLine().trim().toLowerCase());
                 }
             }
@@ -126,11 +129,11 @@ public class PetSearch {
                     Pet pet = Pet.fromTxtFile(path);
                     pets.add(pet);
                 } catch (IOException e) {
-                    System.out.println("Erro ao ler: " + path.getFileName());
+                    System.out.println("⚠️️ Erro ao ler: " + path.getFileName());
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao acessar a pasta de pets.");
+            System.out.println("⚠️️ Erro ao acessar a pasta de pets.");
         }
 
         return pets;
@@ -139,7 +142,7 @@ public class PetSearch {
     private static void printOptionsMenu() {
         System.out.println("""
                 
-                Selecione um filtro adicional:
+                Escolha:
                 [1] - Nome ou sobrenome
                 [2] - Sexo
                 [3] - Idade
@@ -159,7 +162,7 @@ public class PetSearch {
                 }
                 return value;
             } catch (IllegalArgumentException e) {
-                System.out.println("Entrada inválida. Tente novamente.");
+                System.out.println("⚠️️ Erro: " + e.getMessage());
             }
         }
     }
