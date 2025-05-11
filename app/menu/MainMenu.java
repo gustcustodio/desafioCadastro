@@ -50,15 +50,17 @@ public class MainMenu {
                 MainMenu.initialMenu();
                 break;
             case 2:
-                SearchMenu.executeSearch();
+                ListFilteredPets.listFilteredPets();
                 MainMenu.dashedLines();
                 MainMenu.initialMenu();
                 break;
             case 3:
-                System.out.println("\nTestando opção 3.");
+                DeleteRegisteredPet.executeDeletion();
+                MainMenu.dashedLines();
+                MainMenu.initialMenu();
                 break;
             case 4:
-                SearchMenu.listAllRegisteredPets();
+                ListAllRegisteredPets.listAllRegisteredPets();
                 MainMenu.dashedLines();
                 MainMenu.initialMenu();
                 break;
