@@ -13,12 +13,24 @@ public class Address {
         return streetOfAdress;
     }
 
+    public void setStreetOfAdress(String streetOfAdress) {
+        this.streetOfAdress = streetOfAdress;
+    }
+
     public String getNumberOfAddress() {
         return numberOfAddress;
     }
 
+    public void setNumberOfAddress(String numberOfAddress) {
+        this.numberOfAddress = numberOfAddress;
+    }
+
     public String getCityOfAdress() {
         return cityOfAdress;
+    }
+
+    public void setCityOfAdress(String cityOfAdress) {
+        this.cityOfAdress = cityOfAdress;
     }
 
     @Override
