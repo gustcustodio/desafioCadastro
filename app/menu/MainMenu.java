@@ -9,6 +9,8 @@ public class MainMenu {
     public static final List<String> questions = new ArrayList<>();
     public static final List<Pet> pets = new ArrayList<>();
 
+    // todo Melhorar a visualização dos menus //
+
     public static void initialMenu() {
         int option = -1;
         do {
@@ -39,20 +41,26 @@ public class MainMenu {
         } while (option != 6);
     }
 
-    public static void formOption(int option) {
+    private static void formOption(int option) {
         switch (option) {
             case 1:
                 NewRegister.formReader();
                 NewRegister.newRegister();
+                MainMenu.dashedLines();
+                MainMenu.initialMenu();
                 break;
             case 2:
                 SearchMenu.executeSearch();
+                MainMenu.dashedLines();
+                MainMenu.initialMenu();
                 break;
             case 3:
                 System.out.println("\nTestando opção 3.");
                 break;
             case 4:
-                System.out.println("\nTestando opção 4.");
+                SearchMenu.listAllRegisteredPets();
+                MainMenu.dashedLines();
+                MainMenu.initialMenu();
                 break;
             case 5:
                 System.out.println("\nTestando opção 5.");
@@ -61,5 +69,18 @@ public class MainMenu {
                 System.out.println("\nSaindo do sistema. Até logo!");
                 break;
         }
+    }
+
+    private static void dashedLines() {
+        char trace = '-';
+        int repetition = 100;
+
+        System.out.println();
+
+        for (int i = 0; i < repetition; i++) {
+            System.out.print(trace);
+        }
+
+        System.out.println();
     }
 }
