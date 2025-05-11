@@ -32,17 +32,29 @@ public class SearchMenu {
         }
     }
 
+    public static void listAllRegisteredPets() {
+        List<Pet> allRegisteredPets = loadSavedPets();
+
+        if (allRegisteredPets.isEmpty()) {
+            System.out.println("\nNão existe nenhum pet cadastrado");
+        } else {
+            System.out.println("\nPets cadastrados:");
+            allRegisteredPets.forEach(System.out::println);
+        }
+    }
+
     private static Type askPetType() {
         int choice = askForNumber("""
+      
                 Qual tipo de animal deseja buscar?
                 [1] - Cachorro
                 [2] - Gato
-                Digite:\s""", 2);
+                Digite a opção desejada:\s""", 2);
         return (choice == 1) ? Type.CACHORRO : Type.GATO;
     }
 
     private static List<Integer> askFilters() {
-        int filters = askForNumber("Quantos filtros deseja usar? (1 ou 2): ", 2);
+        int filters = askForNumber("\nQuantos filtros deseja usar? (1 ou 2): ", 2);
         List<Integer> criteria = new ArrayList<>();
 
         for (int i = 1; i <= filters; i++) {
@@ -126,7 +138,7 @@ public class SearchMenu {
     private static List<Pet> loadSavedPets() {
         List<Pet> pets = new ArrayList<>();
 
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(SearchMenu.petsFolder, "*.txt")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(petsFolder, "*.txt")) {
             for (Path path : stream) {
                 try {
                     Pet pet = Pet.fromTxtFile(path);
@@ -144,6 +156,7 @@ public class SearchMenu {
 
     private static void printOptionsMenu() {
         System.out.println("""
+                
                 Selecione um filtro adicional:
                 [1] - Nome ou sobrenome
                 [2] - Sexo
@@ -163,7 +176,7 @@ public class SearchMenu {
                     throw new IllegalArgumentException("Número inválido.");
                 }
                 return value;
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Entrada inválida. Tente novamente.");
             }
         }
