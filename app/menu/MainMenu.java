@@ -22,20 +22,24 @@ public class MainMenu {
             System.out.println("[6] Sair\n");
             System.out.print("Digite o número da opção desejada: ");
 
+            String input = sc.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("\n⚠️ Entrada vazia. Digite um número entre 1 e 6.");
+                continue;
+            }
+
             try {
-                option = sc.nextInt();
-                sc.nextLine();
+                option = Integer.parseInt(input);
 
                 if (option <= 0 || option > 6) {
-                    System.out.println("Opção inválida. Digite um número entre 1 e 6.");
+                    System.out.println("\n⚠️ Opção inválida. Digite um número entre 1 e 6.");
                 } else {
                     formOption(option);
-                    break;
                 }
 
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada inválida. Digite apenas números.");
-                sc.nextLine();
+            } catch (NumberFormatException e) {
+                System.out.println("\n⚠️ Entrada inválida. Digite apenas números.");
             }
 
         } while (option != 6);
@@ -65,7 +69,9 @@ public class MainMenu {
                 MainMenu.initialMenu();
                 break;
             case 5:
-                System.out.println("\nTestando opção 5.");
+                ChangeRegisteredPet.executeEdition();
+                MainMenu.dashedLines();
+                MainMenu.initialMenu();
                 break;
             case 6:
                 System.out.println("\nSaindo do sistema. Até logo!");
