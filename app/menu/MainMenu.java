@@ -9,8 +9,6 @@ public class MainMenu {
     public static final List<String> questions = new ArrayList<>();
     public static final List<Pet> pets = new ArrayList<>();
 
-    // todo Melhorar a visualização dos menus //
-
     public static void initialMenu() {
         int option = -1;
         do {
@@ -51,31 +49,25 @@ public class MainMenu {
                 NewRegister.formReader();
                 NewRegister.newRegister();
                 MainMenu.dashedLines();
-                MainMenu.initialMenu();
                 break;
             case 2:
                 ListFilteredPets.listFilteredPets();
                 MainMenu.dashedLines();
-                MainMenu.initialMenu();
                 break;
             case 3:
                 DeleteRegisteredPet.executeDeletion();
                 MainMenu.dashedLines();
-                MainMenu.initialMenu();
                 break;
             case 4:
                 ListAllRegisteredPets.listAllRegisteredPets();
                 MainMenu.dashedLines();
-                MainMenu.initialMenu();
                 break;
             case 5:
                 ChangeRegisteredPet.executeEdition();
                 MainMenu.dashedLines();
-                MainMenu.initialMenu();
                 break;
             case 6:
-                System.out.println("\nSaindo do sistema. Até logo!");
-                break;
+                System.out.println("\n\uD83D\uDC4B Saindo do sistema. Até logo!");
         }
     }
 
