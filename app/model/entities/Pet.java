@@ -20,6 +20,8 @@ public class Pet {
     private Type petType;
     private Address petAddress;
 
+    private Path petFilePath;
+
     public Pet() {
     }
 
@@ -34,8 +36,8 @@ public class Pet {
         this.petBreed = petBreed;
     }
 
-    public static Pet fromTxtFile(Path filePath) throws IOException {
-        List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+    public static Pet fromTxtFile(Path path) throws IOException {
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
         String name = lines.get(0).substring(4).trim();
         Type type = Type.valueOf(lines.get(1).substring(4).trim().toUpperCase());
@@ -51,7 +53,10 @@ public class Pet {
         String weight = lines.get(5).substring(4).trim();
         String breed = lines.get(6).substring(4).trim();
 
-        return new Pet(name, type, sex, address, age, weight, breed);
+        Pet pet = new Pet(name, type, sex, address, age, weight, breed);
+        pet.petFilePath = path;
+
+        return pet;
     }
 
     public String nameChecker(Scanner sc) {
@@ -303,6 +308,10 @@ public class Pet {
 
     public String getPetBreed() {
         return petBreed;
+    }
+
+    public Path getFilePath() {
+        return petFilePath;
     }
 
     @Override
