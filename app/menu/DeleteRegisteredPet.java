@@ -31,7 +31,7 @@ public class DeleteRegisteredPet {
 
         if (confirmation.equals("SIM")) {
             deletePet(petToDelete);
-            System.out.println("\nPet deletado com sucesso!");
+            System.out.println("\n✅ Pet deletado com sucesso!");
         } else {
             System.out.println("\nPet não deletado.");
         }
@@ -48,7 +48,7 @@ public class DeleteRegisteredPet {
                 }
                 return index;
             } catch (IllegalArgumentException e) {
-                System.out.println("Entrada inválida. Tente novamente.");
+                System.out.println("⚠️️ Erro: " + e.getMessage());
             }
         }
     }
@@ -58,7 +58,7 @@ public class DeleteRegisteredPet {
         try {
             Files.deleteIfExists(petFilePath);
         } catch (IOException e) {
-            System.out.println("Erro ao tentar deletar o arquivo do pet: " + e.getMessage());
+            System.out.println("⚠️️ Erro ao tentar deletar o arquivo do pet: " + e.getMessage());
         }
     }
 }
