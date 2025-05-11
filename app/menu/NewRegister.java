@@ -26,7 +26,7 @@ public class NewRegister {
             }
 
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("⚠️️ Error: " + e.getMessage());
         }
     }
 
@@ -42,10 +42,9 @@ public class NewRegister {
         String petWeight = pet.weightChecker(sc);
         String petBreed = pet.breedChecker(sc);
         pets.add(new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed));
-        System.out.println("\nPET CADASTRADO COM SUCESSO!");
+        System.out.println("\n✅ PET CADASTRADO COM SUCESSO!");
         savePetFile(index);
         index++;
-        MainMenu.initialMenu();
     }
 
     public static void savePetFile(int index) {
@@ -59,7 +58,7 @@ public class NewRegister {
         try {
             File file = new File("app/petsCadastrados/" + fileName);
             if (file.createNewFile()) {
-                System.out.println("Um arquivo com as informações do pet foi criado.");
+                System.out.println("\uD83D\uDCC4 Um arquivo com as informações do pet foi criado.");
             }
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                 bw.write("1 - " + pets.get(index).getPetName());
@@ -76,10 +75,10 @@ public class NewRegister {
                 bw.newLine();
                 bw.write("7 - " + pets.get(index).getPetBreed());
             } catch (IOException e) {
-                System.out.println("Ocorreu um erro na escrita do arquivo");
+                System.out.println("⚠️️ Ocorreu um erro na escrita do arquivo");
             }
         } catch (IOException e) {
-            System.out.println("Ocorreu um erro na criação do arquivo.");
+            System.out.println("⚠️️ Ocorreu um erro na criação do arquivo.");
         }
     }
 
