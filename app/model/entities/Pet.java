@@ -81,7 +81,7 @@ public class Pet {
 
                 return petName;
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -100,7 +100,7 @@ public class Pet {
 
                 return Type.valueOf(stringPetType);
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -120,7 +120,7 @@ public class Pet {
 
                 return Sex.valueOf(stringPetSex);
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
 
             }
@@ -143,7 +143,7 @@ public class Pet {
                 }
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -167,10 +167,10 @@ public class Pet {
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite apenas números inteiros.");
+                System.out.println("⚠️️ Erro: Digite apenas números inteiros.");
                 System.out.println("Tente novamente.");
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -186,8 +186,8 @@ public class Pet {
                 }
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Tenta novamente.");
+                System.out.println("⚠️️ Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
             }
         }
 
@@ -221,10 +221,10 @@ public class Pet {
 
                 return stringPetAge;
             } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número válido.");
+                System.out.println("⚠️️ Erro: Digite um número válido.");
                 System.out.println("Tente novamente.");
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -250,10 +250,10 @@ public class Pet {
 
                 return stringPetWeight;
             } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número válido.");
-                System.out.println("Tenta novamente.");
+                System.out.println("⚠️️ Erro: Digite um número válido.");
+                System.out.println("Tente novamente.");
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -276,7 +276,7 @@ public class Pet {
 
                 return petBreed;
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("⚠️️ Erro: " + e.getMessage());
                 System.out.println("Tente novamente.");
             }
         }
@@ -286,28 +286,56 @@ public class Pet {
         return petName;
     }
 
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
     public Type getPetType() {
         return petType;
+    }
+
+    public void setPetType(Type petType) {
+        this.petType = petType;
     }
 
     public Sex getPetSex() {
         return petSex;
     }
 
+    public void setPetSex(Sex petSex) {
+        this.petSex = petSex;
+    }
+
     public Address getPetAddress() {
         return petAddress;
+    }
+
+    public void setPetAddress(Address petAddress) {
+        this.petAddress = petAddress;
     }
 
     public String getPetAge() {
         return petAge;
     }
 
+    public void setPetAge(String petAge) {
+        this.petAge = petAge;
+    }
+
     public String getPetWeight() {
         return petWeight;
     }
 
+    public void setPetWeight(String petWeight) {
+        this.petWeight = petWeight;
+    }
+
     public String getPetBreed() {
         return petBreed;
+    }
+
+    public void setPetBreed(String petBreed) {
+        this.petBreed = petBreed;
     }
 
     public Path getFilePath() {
