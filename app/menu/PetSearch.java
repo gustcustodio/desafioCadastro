@@ -9,38 +9,20 @@ import java.util.*;
 
 import static app.menu.MainMenu.sc;
 
-public class SearchMenu {
+public class PetSearch {
 
     private static final Path petsFolder = Paths.get("app/petsCadastrados");
 
-    public static void executeSearch() {
+    public static List<Pet> executeSearch() {
         Type petType = askPetType();
         List<Integer> criteria = askFilters();
         Map<Integer, String> criteriaValues = collectCriteriaValues(criteria);
         List<Pet> allPets = loadSavedPets();
 
-        List<Pet> filteredPets = allPets.stream()
+        return allPets.stream()
                 .filter(p -> p.getPetType() == petType)
                 .filter(p -> filterByCriteria(p, criteriaValues))
                 .toList();
-
-        if (filteredPets.isEmpty()) {
-            System.out.println("\nNenhum pet encontrado com os critérios informados.");
-        } else {
-            System.out.println("\nPets encontrados:");
-            filteredPets.forEach(System.out::println);
-        }
-    }
-
-    public static void listAllRegisteredPets() {
-        List<Pet> allRegisteredPets = loadSavedPets();
-
-        if (allRegisteredPets.isEmpty()) {
-            System.out.println("\nNão existe nenhum pet cadastrado");
-        } else {
-            System.out.println("\nPets cadastrados:");
-            allRegisteredPets.forEach(System.out::println);
-        }
     }
 
     private static Type askPetType() {
@@ -135,7 +117,7 @@ public class SearchMenu {
         return true;
     }
 
-    private static List<Pet> loadSavedPets() {
+    protected static List<Pet> loadSavedPets() {
         List<Pet> pets = new ArrayList<>();
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(petsFolder, "*.txt")) {
