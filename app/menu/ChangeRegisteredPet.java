@@ -104,7 +104,7 @@ public class ChangeRegisteredPet {
             writer.newLine();
             writer.write("3 - " + pet.getPetSex());
             writer.newLine();
-            writer.write("4 - " +
+            writer.write("4 - Rua " +
                     pet.getPetAddress().getStreetOfAdress() + ", " +
                     pet.getPetAddress().getNumberOfAddress() + ", " +
                     pet.getPetAddress().getCityOfAdress());
